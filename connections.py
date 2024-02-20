@@ -1,4 +1,8 @@
 
+#connections.py is a simple terminal-based version of NY Times game Connections
+#Created by Oliver Healey
+
+
 #Selects four random categories of words
 def get_random_categories():
     pass
