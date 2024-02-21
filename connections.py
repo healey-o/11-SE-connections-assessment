@@ -1,4 +1,5 @@
 from random import choice
+from random import randint
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
@@ -22,12 +23,36 @@ def get_random_categories():
     categories = {}
     while len(categories) < 4:
         random_choice = choice(list(ALL_CATEGORIES.keys()))
-        categories[random_choice] = ALL_CATEGORIES[random_choice]
+        if random_choice not in list(categories.keys()):
+            categories[random_choice] = ALL_CATEGORIES[random_choice]
     return categories
 
-#Takes the four categories and randomly places the words in a 4x4 grid
-def randomize_grid(categories):
-    pass
+#Takes the four categories and randomly places their words in a 4x4 grid
+def randomize_grid(categories:dict):
+    words = []
+    random_grid = []
+
+    #Gets all words in the selected categories
+    for category in categories:
+        for word in categories[category]:
+            words.append(word)
+    
+    #Places these words in random positions in the list
+    for y in range(4):
+        row = []
+
+        for x in range(4):
+            selected_word = words.pop(randint(0,len(words)-1))
+            row.append(selected_word)
+        
+        random_grid.append(row)
+    
+    print(random_grid)
+    return random_grid
+
+randomize_grid(get_random_categories())
+
+    
 
 #Main game loop
 def game_loop(categories, grid):
