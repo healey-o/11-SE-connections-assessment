@@ -55,8 +55,14 @@ randomize_grid(get_random_categories())
     
 
 #Main game loop
-def game_loop(categories, grid):
-    pass
+def game_loop(categories, grid, lives, found_categories):
+    display_grid(grid, lives, found_categories, categories)
+
+    guesses = get_guesses()
+    check_guesses(guesses, categories, found_categories)
+
+    check_win(found_categories)
+
 
 #Displays the grid and associated info to the player
 def display_grid(grid, lives, found_categories, categories):
