@@ -10,12 +10,12 @@ ALL_CATEGORIES = {
     "Physics Terms": ["Velocity", "Speed", "Momentum", "Acceleration"],
     "Calmness": ["Serenity", "Tranquility", "Harmony", "Peace"],
     "Gemstones": ["Sapphire", "Emerald", "Ruby", "Topaz"],
-    "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
-    "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
-    "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
-    "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
-    "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
-    "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
+    # "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
+    # "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
+    # "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
+    # "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
+    # "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
+    # "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
     }
 
 #Selects four random categories of words
@@ -47,10 +47,7 @@ def randomize_grid(categories:dict):
         
         random_grid.append(row)
     
-    print(random_grid)
     return random_grid
-
-randomize_grid(get_random_categories())
 
     
 
@@ -66,7 +63,20 @@ def game_loop(categories, grid, lives, found_categories):
 
 #Displays the grid and associated info to the player
 def display_grid(grid, lives, found_categories, categories):
-    pass
+    print("Create four groups of four!\n")
+
+    for row in grid:
+        for word in row:
+            print(f"|{word}|",end="")
+        print("\n")
+
+    print("Mistakes remaining:", end="")
+    for i in range(lives):
+        print(" •",end="")
+    print("\n")
+
+categories = get_random_categories()
+display_grid(randomize_grid(categories),4,[],categories)
 
 #Prompts the player for their four guesses
 def get_guesses():
