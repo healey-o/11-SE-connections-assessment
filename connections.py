@@ -1,11 +1,29 @@
+from random import choice
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
 
+#TEMPORARY - list of possible categories (will be changed to a database/text file/library later)
+ALL_CATEGORIES = {
+    "Low Volume": ["Whisper", "Murmur", "Mumble", "Hush"],
+    "Physics Terms": ["Velocity", "Speed", "Momentum", "Acceleration"],
+    "Calmness": ["Serenity", "Tranquility", "Harmony", "Peace"],
+    "Gemstones": ["Sapphire", "Emerald", "Ruby", "Topaz"],
+    "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
+    "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
+    "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
+    "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
+    "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
+    "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
+    }
 
 #Selects four random categories of words
 def get_random_categories():
-    pass
+    categories = {}
+    while len(categories) < 4:
+        random_choice = choice(list(ALL_CATEGORIES.keys()))
+        categories[random_choice] = ALL_CATEGORIES[random_choice]
+    return categories
 
 #Takes the four categories and randomly places the words in a 4x4 grid
 def randomize_grid(categories):
