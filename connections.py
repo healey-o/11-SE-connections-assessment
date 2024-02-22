@@ -90,7 +90,7 @@ def get_guesses(categories):
     guesses = []
     words = word_list_from_categories(categories)
 
-    while len(guesses < 4):
+    while len(guesses) < 4:
         guess = input("Enter a word from the grid:")
         
         valid = False
