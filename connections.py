@@ -127,7 +127,11 @@ def check_guesses(guesses, categories, found_categories):
 
 #Checks if all categories have been found
 def check_win(found_categories):
-    pass
+    
+    if len(found_categories) == 4:
+        return True
+    else:
+        return False
 
 #Asks the player if they wish to play again or exit
 def prompt_play_again():
