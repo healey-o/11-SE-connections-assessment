@@ -127,7 +127,7 @@ def check_guesses(guesses, categories, found_categories):
 
 #Checks if all categories have been found
 def check_win(found_categories):
-    
+
     if len(found_categories) == 4:
         return True
     else:
@@ -135,4 +135,15 @@ def check_win(found_categories):
 
 #Asks the player if they wish to play again or exit
 def prompt_play_again():
-    pass
+    
+    play_again = input("Do you want to play again? (Y/N)")
+
+    if play_again.lower() in ["y","yes"]:
+        return True
+    elif play_again.lower() in ["n", "no", "get me out of here"]:
+        return False
+    else:
+        print("Please enter Y or N.")
+        return prompt_play_again()
+    
+print(prompt_play_again())
