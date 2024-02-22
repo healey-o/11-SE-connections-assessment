@@ -75,12 +75,24 @@ def display_grid(grid, lives, found_categories, categories):
         print(" •",end="")
     print("\n")
 
-categories = get_random_categories()
-display_grid(randomize_grid(categories),4,[],categories)
-
 #Prompts the player for their four guesses
 def get_guesses():
-    pass
+    guesses = []
+    while len(guesses < 4):
+        guess = input("Enter a Grid Position (row = a-d, column = 1-4):")
+        if len(guess) == 2:
+
+            if guess[0].isalpha() and guess[1].isnumeric():
+                guesses.append(guess)
+
+            else:
+                print("Input must be a letter (a-d) and a number (1-4)")
+    
+        else:
+            print("Input can only be two characters long.")
+        
+    return guesses
+
 
 #Checks the player's guesses against the four categories
 def check_guesses(guesses, categories, found_categories):
