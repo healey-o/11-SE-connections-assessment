@@ -21,7 +21,7 @@ ALL_CATEGORIES = {
 #Selects four random categories of words
 def get_random_categories():
     categories = {}
-    while len(categories) < 4:
+    while len(categories) < 4:#Picks 4 random categories
         random_choice = choice(list(ALL_CATEGORIES.keys()))
         if random_choice not in list(categories.keys()):
             categories[random_choice] = ALL_CATEGORIES[random_choice]
@@ -42,7 +42,7 @@ def randomize_grid(categories:dict):
     
     random_grid = []
 
-    words = word_list_from_categories(categories)
+    grid_words = word_list_from_categories(categories)
     
     
     #Places these words in random positions in the list
@@ -50,7 +50,7 @@ def randomize_grid(categories:dict):
         row = []
 
         for x in range(4):
-            selected_word = words.pop(randint(0,len(words)-1))
+            selected_word = grid_words.pop(randint(0,len(grid_words)-1)) #popping ensures each word is used once
             row.append(selected_word)
         
         random_grid.append(row)
@@ -79,7 +79,7 @@ def display_grid(grid, lives, found_categories, categories):
             print(f"|{word}|",end="")
         print("\n")
 
-    print("Mistakes remaining:", end="")
+    print("Mistakes remaining:", end="")#Lives counter
     for i in range(lives):
         print(" •",end="")
     print("\n")
@@ -88,14 +88,15 @@ def display_grid(grid, lives, found_categories, categories):
 def get_guesses(categories):
 
     guesses = []
-    words = word_list_from_categories(categories)
+    grid_words = word_list_from_categories(categories)
 
     while len(guesses) < 4:
+        #All guesses are be made lowercase for easier matching
         guess = input("Enter a word from the grid:").lower()
         
         valid = False
 
-        for word in words:
+        for word in grid_words:
             if guess == word.lower():
                 guesses.append(guess)
                 valid = True
