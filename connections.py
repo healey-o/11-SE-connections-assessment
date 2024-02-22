@@ -28,7 +28,7 @@ def get_random_categories():
     return categories
 
 #Combines all words in the given categories into a single list
-def word_list_from_categories(categories):
+def word_list_from_categories(categories:dict):
     words = []
 
     for category in categories:
@@ -63,10 +63,8 @@ def randomize_grid(categories:dict):
 def game_loop(categories, grid, lives, found_categories):
     display_grid(grid, lives, found_categories, categories)
 
-    guesses = get_guesses()
+    guesses = get_guesses(categories)
     found_categories = check_guesses(guesses, categories, found_categories)
-
-    check_win(found_categories)
 
 
 #Displays the grid and associated info to the player
@@ -146,4 +144,24 @@ def prompt_play_again():
         print("Please enter Y or N.")
         return prompt_play_again()
     
-print(prompt_play_again())
+
+#Main script - initializes the variables, then runs the main game loop until the game ends.
+
+if __name__ == "__main__":
+
+    categories = get_random_categories()
+    found_categories = {}
+
+    grid = randomize_grid(categories)
+
+    lives = 4
+
+    game_won = False
+
+    while lives > 0 and not game_won:
+        game_loop(categories, grid, lives, found_categories)
+
+        game_won = check_win(found_categories)
+    
+
+
