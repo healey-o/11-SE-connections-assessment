@@ -27,15 +27,23 @@ def get_random_categories():
             categories[random_choice] = ALL_CATEGORIES[random_choice]
     return categories
 
-#Takes the four categories and randomly places their words in a 4x4 grid
-def randomize_grid(categories:dict):
+#Combines all words in the given categories into a single list
+def word_list_from_categories(categories):
     words = []
-    random_grid = []
 
-    #Gets all words in the selected categories
     for category in categories:
         for word in categories[category]:
             words.append(word)
+    
+    return words
+
+#Takes the four categories and randomly places their words in a 4x4 grid
+def randomize_grid(categories:dict):
+    
+    random_grid = []
+
+    words = word_list_from_categories(categories)
+    
     
     #Places these words in random positions in the list
     for y in range(4):
@@ -63,6 +71,7 @@ def game_loop(categories, grid, lives, found_categories):
 
 #Displays the grid and associated info to the player
 def display_grid(grid, lives, found_categories, categories):
+
     print("Create four groups of four!\n")
 
     for row in grid:
@@ -76,23 +85,26 @@ def display_grid(grid, lives, found_categories, categories):
     print("\n")
 
 #Prompts the player for their four guesses
-def get_guesses():
+def get_guesses(categories):
+
     guesses = []
+    words = word_list_from_categories(categories)
+
     while len(guesses < 4):
-        guess = input("Enter a Grid Position (row = a-d, column = 1-4):")
-        if len(guess) == 2:
+        guess = input("Enter a word from the grid:")
+        
+        valid = False
 
-            if guess[0].isalpha() and guess[1].isnumeric():
+        for word in words:
+            if guess.upper() == word.upper():
                 guesses.append(guess)
+                valid = True
 
-            else:
-                print("Input must be a letter (a-d) and a number (1-4)")
-    
-        else:
-            print("Input can only be two characters long.")
+        if not valid:
+            print("Sorry, that is not in the list. Please try again.")
+
         
     return guesses
-
 
 #Checks the player's guesses against the four categories
 def check_guesses(guesses, categories, found_categories):
