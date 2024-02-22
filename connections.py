@@ -64,7 +64,7 @@ def game_loop(categories, grid, lives, found_categories):
     display_grid(grid, lives, found_categories, categories)
 
     guesses = get_guesses()
-    check_guesses(guesses, categories, found_categories)
+    found_categories = check_guesses(guesses, categories, found_categories)
 
     check_win(found_categories)
 
@@ -91,12 +91,12 @@ def get_guesses(categories):
     words = word_list_from_categories(categories)
 
     while len(guesses) < 4:
-        guess = input("Enter a word from the grid:")
+        guess = input("Enter a word from the grid:").lower()
         
         valid = False
 
         for word in words:
-            if guess.upper() == word.upper():
+            if guess == word.lower():
                 guesses.append(guess)
                 valid = True
 
@@ -108,7 +108,21 @@ def get_guesses(categories):
 
 #Checks the player's guesses against the four categories
 def check_guesses(guesses, categories, found_categories):
-    pass
+    valid = False
+
+    for category in categories:
+        if valid == False: #Repeats until a match is found or there are no more categories
+
+            valid = True
+            for word in categories[category]:
+                if (word.lower() not in guesses) and valid:
+                    valid = False
+            
+            if valid:
+                found_categories[category] = categories[category]
+
+
+    return found_categories
 
 #Checks if all categories have been found
 def check_win(found_categories):
