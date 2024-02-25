@@ -1,5 +1,6 @@
 from random import choice
 from random import randint
+import math
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
@@ -72,10 +73,36 @@ def display_grid(grid, lives, found_categories, categories):
 
     print("Create four groups of four!\n")
 
+    words = word_list_from_categories(categories)
+
+    #Each grid 'tile' is the width of the longest word, plus a border of 3 spaces each side
+    tile_width = len(max(words, key=len)) + 6
+
+    for i in range((tile_width+2)*4):
+        print("-",end="")
+    print("\n")
+
     for row in grid:
         for word in row:
-            print(f"|{word}|",end="")
+            filler_len = (tile_width - len(word))
+
+            print("|",end="")
+            for i in range(math.floor(filler_len/2)):
+                print(" ",end="")
+
+            print(word,end="")
+
+            for i in range(math.ceil(filler_len/2)):
+                print(" ",end="")
+            print("|",end="")
+        
         print("\n")
+
+        for i in range((tile_width+2)*4):
+            print("-",end="")
+        print("\n")
+
+        
 
     print("Mistakes remaining:", end="")#Lives counter
     for i in range(lives):
