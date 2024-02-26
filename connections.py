@@ -109,6 +109,37 @@ def display_grid(grid, lives, found_categories, categories):
         print(" •",end="")
     print("\n")
 
+#Edits the grid with any successfully guessed categories at the top
+def redraw_grid(categories, found_categories, grid):
+    new_grid = []
+
+    grid_words = word_list_from_categories(categories)
+
+    if len(found_categories) > 0:
+        for found_category in found_categories:
+            new_grid.append(found_categories[found_category])
+            for word in grid_words:
+                if word in found_categories[found_category]:
+                    grid_words.pop(grid_words.index(word))
+
+        for y in range(4-len(found_categories)):
+            row = []
+
+            for x in range(4):
+                selected_word = grid_words.pop(randint(0,len(grid_words)-1))
+                row.append(selected_word)
+            
+            new_grid.append(row)
+    else:
+        new_grid = grid
+
+    return new_grid
+
+
+            
+
+    
+
 #Prompts the player for their four guesses
 def get_guesses(categories):
 
@@ -146,6 +177,7 @@ def check_guesses(guesses, categories, found_categories):
             
             if valid:
                 found_categories[category] = categories[category]
+                print(f"Correct! Found Category: {category}")
 
 
     return found_categories
@@ -187,6 +219,8 @@ if __name__ == "__main__":
 
     while lives > 0 and not game_won:
         game_loop(categories, grid, lives, found_categories)
+
+        grid = redraw_grid(categories, found_categories, grid)
 
         game_won = check_win(found_categories)
     
