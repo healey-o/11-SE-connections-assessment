@@ -78,11 +78,17 @@ def display_grid(grid, lives, found_categories, categories):
     #Each grid 'tile' is the width of the longest word, plus a border of 3 spaces each side
     tile_width = len(max(words, key=len)) + 6
 
-    for i in range((tile_width+2)*4):
-        print("-",end="")
-    print("\n")
-
     for row in grid:
+        
+        if grid.index(row) <= (len(found_categories) - 1): #When the line is displaying guessed categories, change text colour
+            print("\u001b[32m")
+        else:
+            print("\u001b[37m")
+
+        for i in range((tile_width+2)*4):#Add line between each row of categories
+            print("-",end="")
+        print("\n")
+
         for word in row:
             filler_len = (tile_width - len(word))
 
@@ -98,9 +104,11 @@ def display_grid(grid, lives, found_categories, categories):
         
         print("\n")
 
-        for i in range((tile_width+2)*4):
-            print("-",end="")
-        print("\n")
+        
+
+    for i in range((tile_width+2)*4):
+        print("-",end="")
+    print("\n")
 
         
 
