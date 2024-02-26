@@ -143,11 +143,6 @@ def redraw_grid(categories, found_categories, grid):
 
     return new_grid
 
-
-            
-
-    
-
 #Prompts the player for their four guesses
 def get_guesses(categories):
 
@@ -161,12 +156,12 @@ def get_guesses(categories):
         valid = False
 
         for word in grid_words:
-            if guess == word.lower():
+            if guess == word.lower() and guess not in guesses:
                 guesses.append(guess)
                 valid = True
 
         if not valid:
-            print("Sorry, that is not in the list. Please try again.")
+            print("Sorry, that response is not valid. Please try again.")
 
         
     return guesses
