@@ -43,7 +43,11 @@ def randomize_grid(categories:dict):
     
     random_grid = []
 
-    grid_words = word_list_from_categories(categories)
+    grid_words = []
+
+    for category in categories:
+        for word in categories[category]:
+            grid_words.append(word)
     
     
     #Places these words in random positions in the list
