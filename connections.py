@@ -221,22 +221,31 @@ def prompt_play_again():
 #Main script - initializes the variables, then runs the main game loop until the game ends.
 
 if __name__ == "__main__":
+    playing = True
 
-    categories = get_random_categories()
-    found_categories = {}
+    while playing:
+        categories = get_random_categories()
+        found_categories = {}
 
-    grid = randomize_grid(categories)
+        grid = randomize_grid(categories)
 
-    lives = 4 #Lives is used as a global variable as its value is often changed within functions
+        lives = 4 #Lives is used as a global variable as its value is often changed within functions
 
-    game_won = False
+        game_won = False
 
-    while lives > 0 and not game_won:
-        game_loop(categories, grid, found_categories)
+        while lives > 0 and not game_won:
+            game_loop(categories, grid, found_categories)
 
-        grid = redraw_grid(categories, found_categories, grid)
+            grid = redraw_grid(categories, found_categories, grid)
 
-        game_won = check_win(found_categories)
+            game_won = check_win(found_categories)
+        
+        if game_won:
+            print("Congratulations! You win!")
+        else:
+            print("Sorry, you have run out of lives.")
+        
+        playing = prompt_play_again()
     
 
 
