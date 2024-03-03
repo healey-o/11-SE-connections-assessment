@@ -11,21 +11,24 @@ ALL_CATEGORIES = {
     "Physics Terms": ["Velocity", "Speed", "Momentum", "Acceleration"],
     "Calmness": ["Serenity", "Tranquility", "Harmony", "Peace"],
     "Gemstones": ["Sapphire", "Emerald", "Ruby", "Topaz"],
-    # "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
-    # "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
-    # "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
-    # "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
-    # "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
-    # "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
+    "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
+    "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
+    "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
+    "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
+    "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
+    "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
     }
 
 #Selects four random categories of words
 def get_random_categories():
     categories = {}
+
     while len(categories) < 4:#Picks 4 random categories
         random_choice = choice(list(ALL_CATEGORIES.keys()))
+        
         if random_choice not in list(categories.keys()):
             categories[random_choice] = ALL_CATEGORIES[random_choice]
+
     return categories
 
 #Combines all words in the given categories into a single list
@@ -62,27 +65,20 @@ def randomize_grid(categories:dict):
     
     return random_grid
 
-    
-
-#Main game loop
-def game_loop(categories, grid, found_categories):
-    global lives
-    display_grid(grid, found_categories, categories)
-
-    guesses = get_guesses(categories)
-    found_categories = check_guesses(guesses, categories, found_categories)
-
-
 #Displays the grid and associated info to the player
-def display_grid(grid, found_categories, categories):
+def display_grid(grid, found_categories):
     global lives
 
-    print("Create four groups of four!\n")
+    print("\nCreate four groups of four!")
 
-    words = word_list_from_grid(grid)
+    grid_words = word_list_from_grid(grid)
 
     #Each grid 'tile' is the width of the longest word, plus a border of 3 spaces each side
-    tile_width = len(max(words, key=len)) + 6
+    tile_width = len(max(grid_words, key=len)) + 6
+
+    def draw_line():# Will add lines around each row of categories
+        for i in range((tile_width+2)*4):#Add line between each row of categories
+            print("-",end="")
 
     for row in grid:
         
@@ -91,38 +87,29 @@ def display_grid(grid, found_categories, categories):
         else:
             print("\u001b[37m")
 
-        for i in range((tile_width+2)*4):#Add line between each row of categories
-            print("-",end="")
+        draw_line()
         print("\n")
-
+        
         for word in row:
-            filler_len = (tile_width - len(word))
-
             print("|",end="")
-            for i in range(math.floor(filler_len/2)):
-                print(" ",end="")
 
-            print(word,end="")
+            print(word.center(tile_width),end="") #Centres each word in the same sized box
 
-            for i in range(math.ceil(filler_len/2)):
-                print(" ",end="")
             print("|",end="")
         
         print("\n")
 
-        for i in range((tile_width+2)*4): #Adds a second line
-            print("-",end="")
-        print("\n")
+        draw_line()
 
         
 
-    print("Mistakes remaining:", end="")#Lives counter
+    print("\nMistakes remaining:", end="")#Lives counter
     for i in range(lives):
         print(" •",end="")
     print("\n")
 
 #Edits the grid with any successfully guessed categories at the top
-def redraw_grid(categories, found_categories, grid):
+def redraw_grid(found_categories, grid):
     new_grid = []
 
     grid_words = word_list_from_grid(grid)
@@ -148,7 +135,7 @@ def redraw_grid(categories, found_categories, grid):
     return new_grid
 
 #Prompts the player for their four guesses
-def get_guesses(categories):
+def get_guesses():
     global lives
 
     guesses = []
@@ -218,6 +205,15 @@ def prompt_play_again():
         return prompt_play_again()
     
 
+#Main game loop - Displays the grid then prompts for and checks guesses
+def game_loop(categories, grid, found_categories):
+
+    display_grid(grid, found_categories)
+
+    guesses = get_guesses()
+    found_categories = check_guesses(guesses, categories, found_categories)
+
+
 #Main script - initializes the variables, then runs the main game loop until the game ends.
 
 if __name__ == "__main__":
@@ -233,12 +229,13 @@ if __name__ == "__main__":
 
         game_won = False
 
+        #Runs the game loop for the duration of the game
         while lives > 0 and not game_won:
             game_loop(categories, grid, found_categories)
 
-            grid = redraw_grid(categories, found_categories, grid)
+            grid = redraw_grid(found_categories, grid) #Updates the grid variable after each loop
 
-            game_won = check_win(found_categories)
+            game_won = check_win(found_categories) #Checks if the game is completed
         
         if game_won:
             print("Congratulations! You win!")
