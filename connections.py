@@ -13,7 +13,7 @@ ALL_CATEGORIES = {
     "Gemstones": ["Sapphire", "Emerald", "Ruby", "Topaz"],
     "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
     "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
-    "Music Elements": ["Melody", "Harmony", "Rhythm", "Tune"],
+    "Music Elements": ["Melody", "Bass", "Rhythm", "Tune"],
     "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
     "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
     "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
