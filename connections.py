@@ -20,19 +20,19 @@ ALL_CATEGORIES = {
     }
 
 #Selects four random categories of words
-def get_random_categories():
+def GetRandomCategories():
     categories = {}
 
     while len(categories) < 4:#Picks 4 random categories
-        random_choice = choice(list(ALL_CATEGORIES.keys()))
+        randomChoice = choice(list(ALL_CATEGORIES.keys()))
         
-        if random_choice not in list(categories.keys()):
-            categories[random_choice] = ALL_CATEGORIES[random_choice]
+        if randomChoice not in list(categories.keys()):
+            categories[randomChoice] = ALL_CATEGORIES[randomChoice]
 
     return categories
 
 #Combines all words in the given categories into a single list
-def word_list_from_grid(grid:list):
+def WordListFromGrid(grid:list):
     words = []
 
     for row in grid:
@@ -42,15 +42,15 @@ def word_list_from_grid(grid:list):
     return words
 
 #Takes the four categories and randomly places their words in a 4x4 grid
-def randomize_grid(categories:dict):
+def RandomizeGrid(categories:dict):
     
-    random_grid = []
+    randomGrid = []
 
-    grid_words = []
+    gridWords = []
 
     for category in categories:
         for word in categories[category]:
-            grid_words.append(word)
+            gridWords.append(word)
     
     
     #Places these words in random positions in the list
@@ -58,31 +58,32 @@ def randomize_grid(categories:dict):
         row = []
 
         for x in range(4):
-            selected_word = grid_words.pop(randint(0,len(grid_words)-1)) #popping ensures each word is used once
-            row.append(selected_word)
+            selectedWord = gridWords.pop(randint(0,len(gridWords)-1)) #popping ensures each word is used once
+            row.append(selectedWord)
         
-        random_grid.append(row)
+        randomGrid.append(row)
     
-    return random_grid
+    return randomGrid
 
 #Displays the grid and associated info to the player
-def display_grid(grid, found_categories):
+def DisplayGrid(grid, foundCategories):
     global lives
 
     print("\nCreate four groups of four!")
 
-    grid_words = word_list_from_grid(grid)
+    gridWords = WordListFromGrid(grid)
 
     #Each grid 'tile' is the width of the longest word, plus a border of 3 spaces each side
-    tile_width = len(max(grid_words, key=len)) + 6
+    tileWidth = len(max(gridWords, key=len)) + 6
 
-    def draw_line():# Will add lines around each row of categories
-        for i in range((tile_width+2)*4):#Add line between each row of categories
+    #Internal function - adds lines around each row of categories
+    def draw_line():
+        for i in range((tileWidth+2)*4):#Add line between each row of categories
             print("-",end="")
 
     for row in grid:
         
-        if grid.index(row) <= (len(found_categories) - 1): #When the line is displaying guessed categories, change text colour
+        if grid.index(row) <= (len(foundCategories) - 1): #When the line is displaying guessed categories, change text colour
             print("\u001b[32m")
         else:
             print("\u001b[37m")
@@ -93,7 +94,7 @@ def display_grid(grid, found_categories):
         for word in row:
             print("|",end="")
 
-            print(word.center(tile_width),end="") #Centres each word in the same sized box
+            print(word.center(tileWidth),end="") #Centres each word in the same sized box
 
             print("|",end="")
         
@@ -109,37 +110,37 @@ def display_grid(grid, found_categories):
     print("\n")
 
 #Edits the grid with any successfully guessed categories at the top
-def redraw_grid(found_categories, grid):
-    new_grid = []
+def RedrawGrid(foundCategories, grid):
+    newGrid = []
 
-    grid_words = word_list_from_grid(grid)
+    gridWords = WordListFromGrid(grid)
 
-    if len(found_categories) > 0: #Adds found categories to the top of the new grid
-        for found_category in found_categories:
-            new_grid.append(found_categories[found_category])
+    if len(foundCategories) > 0: #Adds found categories to the top of the new grid
+        for foundCategory in foundCategories:
+            newGrid.append(foundCategories[foundCategory])
             
-            for word in found_categories[found_category]: #Removes the found category words from grid_words
-                grid_words.pop(grid_words.index(word))
+            for word in foundCategories[foundCategory]: #Removes the found category words from grid_words
+                gridWords.pop(gridWords.index(word))
 
-        for y in range(4-len(found_categories)): #Adds the remaining words to the grid
+        for y in range(4-len(foundCategories)): #Adds the remaining words to the grid
             row = []
 
             for x in range(4):
-                selected_word = grid_words.pop(0) #Adds words that have not been guessed correctly back to the grid in the same order as before
-                row.append(selected_word)
+                selectedWord = gridWords.pop(0) #Adds words that have not been guessed correctly back to the grid in the same order as before
+                row.append(selectedWord)
             
-            new_grid.append(row)
+            newGrid.append(row)
     else:
-        new_grid = grid
+        newGrid = grid
 
-    return new_grid
+    return newGrid
 
 #Prompts the player for their four guesses
-def get_guesses():
+def GetGuesses():
     global lives
 
     guesses = []
-    grid_words = word_list_from_grid(grid)
+    gridWords = WordListFromGrid(grid)
 
     while len(guesses) < 4:
         #All guesses are be made lowercase for easier matching
@@ -147,7 +148,7 @@ def get_guesses():
         
         valid = False
 
-        for word in grid_words:
+        for word in gridWords:
             if guess == word.lower() and guess not in guesses:
                 guesses.append(guess)
                 valid = True
@@ -159,7 +160,7 @@ def get_guesses():
     return guesses
 
 #Checks the player's guesses against the four categories
-def check_guesses(guesses, categories, found_categories):
+def CheckGuesses(guesses, categories, foundCategories):
     global lives
 
     valid = False
@@ -173,7 +174,7 @@ def check_guesses(guesses, categories, found_categories):
                     valid = False
             
             if valid:
-                found_categories[category] = categories[category]
+                foundCategories[category] = categories[category]
                 print(f"Correct! Found Category: {category}")
     
     if valid == False: #If the categories all returned false, lose a life
@@ -181,37 +182,37 @@ def check_guesses(guesses, categories, found_categories):
         print(f"Sorry, that is not correct.")
 
 
-    return found_categories
+    return foundCategories
 
 #Checks if all categories have been found
-def check_win(found_categories):
+def CheckWin(foundCategories):
 
-    if len(found_categories) == 4:
+    if len(foundCategories) == 4:
         return True
     else:
         return False
 
 #Asks the player if they wish to play again or exit
-def prompt_play_again():
+def PromptPlayAgain():
     
-    play_again = input("Do you want to play again? (Y/N)")
+    playAgain = input("Do you want to play again? (Y/N)")
 
-    if play_again.lower() in ["y","yes"]:
+    if playAgain.lower() in ["y","yes"]:
         return True
-    elif play_again.lower() in ["n", "no", "get me out of here"]:
+    elif playAgain.lower() in ["n", "no", "get me out of here"]:
         return False
     else:
         print("Please enter Y or N.")
-        return prompt_play_again()
+        return PromptPlayAgain()
     
 
 #Main game loop - Displays the grid then prompts for and checks guesses
-def game_loop(categories, grid, found_categories):
+def GameLoop(categories, grid, foundCategories):
 
-    display_grid(grid, found_categories)
+    DisplayGrid(grid, foundCategories)
 
-    guesses = get_guesses()
-    found_categories = check_guesses(guesses, categories, found_categories)
+    guesses = GetGuesses()
+    foundCategories = CheckGuesses(guesses, categories, foundCategories)
 
 
 #Main script - initializes the variables, then runs the main game loop until the game ends.
@@ -220,29 +221,29 @@ if __name__ == "__main__":
     playing = True
 
     while playing:
-        categories = get_random_categories()
-        found_categories = {}
+        categories = GetRandomCategories()
+        foundCategories = {}
 
-        grid = randomize_grid(categories)
+        grid = RandomizeGrid(categories)
 
         lives = 4 #Lives is used as a global variable as its value is often changed within functions
 
-        game_won = False
+        gameWon = False
 
         #Runs the game loop for the duration of the game
-        while lives > 0 and not game_won:
-            game_loop(categories, grid, found_categories)
+        while lives > 0 and not gameWon:
+            GameLoop(categories, grid, foundCategories)
 
-            grid = redraw_grid(found_categories, grid) #Updates the grid variable after each loop
+            grid = RedrawGrid(foundCategories, grid) #Updates the grid variable after each loop
 
-            game_won = check_win(found_categories) #Checks if the game is completed
+            gameWon = CheckWin(foundCategories) #Checks if the game is completed
         
-        if game_won:
+        if gameWon:
             print("Congratulations! You win!")
         else:
             print("Sorry, you have run out of lives.")
         
-        playing = prompt_play_again()
+        playing = PromptPlayAgain()
     
 
 
