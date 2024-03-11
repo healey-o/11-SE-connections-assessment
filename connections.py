@@ -163,23 +163,26 @@ def GetGuesses():
 def CheckGuesses(guesses, categories, foundCategories):
     global lives
 
-    valid = False
+    correct_count = 0 # counts number of correct words for each category
 
     for category in categories:
-        if valid == False: #Repeats until a match is found or there are no more categories
+        if correct_count < 4: #Loops through each category until a match is found or there are no more categories
 
-            valid = True
+            correct_count = 0
+
             for word in categories[category]:
-                if (word.lower() not in guesses) and valid:
-                    valid = False
+                if (word.lower() in guesses):
+                    correct_count += 1
             
-            if valid:
+            if correct_count == 4:
                 foundCategories[category] = categories[category]
                 print(f"Correct! Found Category: {category}")
+            elif correct_count == 3:
+                print(f"One away...")
     
-    if valid == False: #If the categories all returned false, lose a life
+    if correct_count < 4: #If no category matches, lose a life
         lives -= 1
-        print(f"Sorry, that is not correct.")
+        print(f"Sorry, that is not correct.") 
 
 
     return foundCategories
@@ -239,6 +242,8 @@ if __name__ == "__main__":
             gameWon = CheckWin(foundCategories) #Checks if the game is completed
         
         if gameWon:
+            if lives == 1:
+                print("Phew!")
             print("Congratulations! You win!")
         else:
             print("Sorry, you have run out of lives.")
