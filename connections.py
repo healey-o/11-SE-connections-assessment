@@ -1,6 +1,5 @@
 from random import choice
 from random import randint
-import math
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
