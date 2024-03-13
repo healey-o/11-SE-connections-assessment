@@ -16,6 +16,8 @@ def GetRandomCategories():
 
     cursor.execute("SELECT * FROM categories ORDER BY RANDOM() LIMIT 4") #Selects 4 random rows of the database
 
+    #The first option in each row is the category name, and the remaining 4 are the words in said category
+
     categories = {}
 
     for category in cursor.fetchall():
@@ -77,8 +79,9 @@ def DisplayGrid(grid, foundCategories):
 
     for row in grid:
         
-        if grid.index(row) <= (len(foundCategories) - 1): #When the line is displaying guessed categories, change text colour
+        if grid.index(row) <= (len(foundCategories) - 1): #When the line is displaying guessed categories, change text colour and print the category name
             print("\u001b[32m")
+            print(f"Category: {list(foundCategories.keys())[grid.index(row)]}")
         else:
             print("\u001b[37m")
 
