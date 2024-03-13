@@ -1,4 +1,3 @@
-from random import choice
 from random import randint
 import sqlite3
 from contextlib import closing
