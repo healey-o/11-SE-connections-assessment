@@ -1,32 +1,28 @@
 from random import choice
 from random import randint
+import sqlite3
+from contextlib import closing
+
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
 
-#TEMPORARY - list of possible categories (will be changed to a database/text file/library later)
-ALL_CATEGORIES = {
-    "Low Volume": ["Whisper", "Murmur", "Mumble", "Hush"],
-    "Physics Terms": ["Velocity", "Speed", "Momentum", "Acceleration"],
-    "Calmness": ["Serenity", "Tranquility", "Harmony", "Peace"],
-    "Gemstones": ["Sapphire", "Emerald", "Ruby", "Topaz"],
-    "Brightness": ["Illuminate", "Radiate", "Gleam", "Shine"],
-    "Thinking Deeply": ["Ponder", "Contemplate", "Reflect", "Meditate"],
-    "Music Elements": ["Melody", "Bass", "Rhythm", "Tune"],
-    "Speed": ["Brisk", "Swift", "Rapid", "Quick"],
-    "Shades of Blue": ["Azure", "Cerulean", "Cobalt", "Indigo"],
-    "Powerful Winds": ["Whirlwind", "Cyclone", "Tornado", "Hurricane"]
-    }
-
-#Selects four random categories of words
+#Selects four random categories of words from the database
 def GetRandomCategories():
+    #Connect to database
+    categoriesConnection = sqlite3.connect('categories.db')
+    cursor = categoriesConnection.cursor()
+
+    categoriesConnection.commit()
+
+    cursor.execute("SELECT * FROM categories ORDER BY RANDOM() LIMIT 4") #Selects 4 random rows of the database
+
     categories = {}
 
-    while len(categories) < 4:#Picks 4 random categories
-        randomChoice = choice(list(ALL_CATEGORIES.keys()))
-        
-        if randomChoice not in list(categories.keys()):
-            categories[randomChoice] = ALL_CATEGORIES[randomChoice]
+    for category in cursor.fetchall():
+        categories[category[0]] = [category[1],category[2],category[3],category[4]]
+
+    categoriesConnection.close()
 
     return categories
 
@@ -162,24 +158,24 @@ def GetGuesses():
 def CheckGuesses(guesses, categories, foundCategories):
     global lives
 
-    correct_count = 0 # counts number of correct words for each category
+    correctCount = 0 # counts number of correct words for each category
 
     for category in categories:
-        if correct_count < 4: #Loops through each category until a match is found or there are no more categories
+        if correctCount < 4: #Loops through each category until a match is found or there are no more categories
 
-            correct_count = 0
+            correctCount = 0
 
             for word in categories[category]:
                 if (word.lower() in guesses):
-                    correct_count += 1
+                    correctCount += 1
             
-            if correct_count == 4:
+            if correctCount == 4:
                 foundCategories[category] = categories[category]
                 print(f"Correct! Found Category: {category}")
-            elif correct_count == 3:
+            elif correctCount == 3:
                 print(f"One away...")
     
-    if correct_count < 4: #If no category matches, lose a life
+    if correctCount < 4: #If no category matches, lose a life
         lives -= 1
         print(f"Sorry, that is not correct.") 
 
