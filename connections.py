@@ -179,7 +179,7 @@ def CheckGuesses(guesses, categories, foundCategories):
     
     if correctCount < 4: #If no category matches, lose a life
         lives -= 1
-        print(f"Sorry, that is not correct.") 
+        print(f"That is not correct.") 
 
 
     return foundCategories
@@ -204,7 +204,7 @@ def PromptPlayAgain():
     else:
         print("Please enter Y or N.")
         return PromptPlayAgain()
-    
+
 
 #Main game loop - Displays the grid then prompts for and checks guesses
 def GameLoop(categories, grid, foundCategories):
