@@ -131,7 +131,7 @@ def RedrawGrid(foundCategories, grid):
     return newGrid
 
 #Prompts the player for their four guesses
-def GetGuesses():
+def GetGuesses(foundCategories):
     global lives
 
     guesses = []
@@ -144,9 +144,16 @@ def GetGuesses():
         valid = False
 
         for word in gridWords:
-            if guess == word.lower() and guess not in guesses:
+            alreadyFound = False
+
+            for category in foundCategories: #Check that the word is not a part of a category that has already been found.
+                if word in foundCategories[category]:
+                    alreadyFound = True
+            
+            if guess == word.lower() and guess not in guesses and not alreadyFound:
                 guesses.append(guess)
                 valid = True
+
 
         if not valid:
             print("Sorry, that response is not valid. Please try again.")
@@ -209,7 +216,7 @@ def GameLoop(categories, grid, foundCategories):
 
     DisplayGrid(grid, foundCategories)
 
-    guesses = GetGuesses()
+    guesses = GetGuesses(foundCategories)
     foundCategories = CheckGuesses(guesses, categories, foundCategories)
 
 
