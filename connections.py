@@ -12,8 +12,6 @@ def GetRandomCategories():
     categoriesConnection = sqlite3.connect('categories.db')
     cursor = categoriesConnection.cursor()
 
-    categoriesConnection.commit()
-
     cursor.execute("SELECT * FROM categories ORDER BY RANDOM() LIMIT 4") #Selects 4 random rows of the database
 
     #The first option in each row is the category name, and the remaining 4 are the words in said category
