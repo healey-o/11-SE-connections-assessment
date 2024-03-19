@@ -89,7 +89,7 @@ def DisplayGrid(grid, foundCategories):
         for word in row:
             print("|",end="")
 
-            print(word.center(tileWidth),end="") #Centres each word in the same sized box
+            print(word.upper().center(tileWidth),end="") #Centres each word in the same sized box
 
             print("|",end="")
         
