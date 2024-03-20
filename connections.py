@@ -2,7 +2,6 @@ from random import randint
 import sqlite3
 from contextlib import closing
 
-
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
 
@@ -200,7 +199,7 @@ def CheckWin(foundCategories):
 #Asks the player if they wish to play again or exit
 def PromptPlayAgain():
     
-    playAgain = input("Do you want to play again? (Y/N)")
+    playAgain = input("\u001b[37mDo you want to play again? (Y/N)")
 
     if playAgain.lower() in ["y","yes"]:
         return True
@@ -246,11 +245,8 @@ if __name__ == "__main__":
         if gameWon:
             if lives == 1:
                 print("Phew!")
-            print("Congratulations! You win!")
+            print("\u001b[32mCongratulations! You win!")
         else:
-            print("Sorry, you have run out of lives.")
+            print("\u001b[31mSorry, you have run out of lives.")
         
         playing = PromptPlayAgain()
-    
-
-
