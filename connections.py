@@ -1,6 +1,7 @@
 from random import randint
 import sqlite3
 from contextlib import closing
+from time import sleep
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
@@ -233,6 +234,23 @@ if __name__ == "__main__":
         lives = 4 #Lives is used as a global variable as its value is often changed within functions
 
         gameWon = False
+
+        #Intro
+        print("Welcome")
+        sleep(1)
+        print("To")
+        sleep(1)
+        print("""
+\u001b[36m
+██████╗ ██╗   ██╗ ██████╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔══██╗╚██╗ ██╔╝██╔════╝██╔═══██╗████╗  ██║████╗  ██║██╔════╝██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+██████╔╝ ╚████╔╝ ██║     ██║   ██║██╔██╗ ██║██╔██╗ ██║█████╗  ██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+██╔═══╝   ╚██╔╝  ██║     ██║   ██║██║╚██╗██║██║╚██╗██║██╔══╝  ██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+██║        ██║   ╚██████╗╚██████╔╝██║ ╚████║██║ ╚████║███████╗╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+\u001b[37m
+""")
+        sleep(2)
 
         #Runs the game loop for the duration of the game
         while lives > 0 and not gameWon:
