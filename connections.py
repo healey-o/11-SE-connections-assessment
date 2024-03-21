@@ -134,32 +134,62 @@ def RedrawGrid(foundCategories, grid):
 def GetGuesses(foundCategories):
     global lives
 
-    guesses = []
+    validGuesses = []
     gridWords = WordListFromGrid(grid)
 
-    while len(guesses) < 4:
-        #All guesses are be made lowercase for easier matching
-        guess = input("Enter a word from the grid:").lower()
-        
-        valid = False
+    guess = input("Enter a word from the grid, or enter 4 words:").lower() #This input runs before the others to check if the player is entering several words
 
-        for word in gridWords:
+    if " " in guess and len(guess.split()) == 4: #Allows all 4 guesses at once
+        guesses = guess.split()
+
+        valid = False
+        for guessSplit in guesses:#Check if each word is valid
             alreadyFound = False
 
             for category in foundCategories: #Check that the word is not a part of a category that has already been found.
-                if word in foundCategories[category]:
-                    alreadyFound = True
-            
-            if guess == word.lower() and guess not in guesses and not alreadyFound:
-                guesses.append(guess)
+                    if guessSplit in [x.lower() for x in foundCategories[category]]:
+                        alreadyFound = True
+
+            if guessSplit in [x.lower() for x in gridWords] and guessSplit not in validGuesses and not alreadyFound:
+                validGuesses.append(guessSplit)
                 valid = True
+            
+            
 
-
-        if not valid:
-            print("Sorry, that response is not valid. Please try again.")
-
+            if not valid:
+                print("Sorry, that response is not valid. Please try again.")
+                return GetGuesses(foundCategories)
         
-    return guesses
+    else:
+        i = 0
+        while len(validGuesses) < 4:
+            #All guesses are be made lowercase for easier matching
+            if i > 0: #only runs after the first guess
+                guess = input("Enter a word from the grid, or enter 4 words:").lower()
+            
+            valid = False
+
+            alreadyFound = False
+
+            for category in foundCategories: #Check that the word is not a part of a category that has already been found.
+                if guess in [x.lower() for x in foundCategories[category]]:
+                    alreadyFound = True
+
+            if not alreadyFound:
+                for word in gridWords:
+                    
+                    if guess == word.lower() and guess not in validGuesses:
+                        validGuesses.append(guess)
+                        valid = True
+
+
+            if not valid:
+                print("Sorry, that response is not valid. Please try again.")
+                return GetGuesses(foundCategories)
+            
+            i+=1
+
+    return validGuesses
 
 #Checks the player's guesses against the four categories
 def CheckGuesses(guesses, categories, foundCategories):
@@ -170,17 +200,19 @@ def CheckGuesses(guesses, categories, foundCategories):
     for category in categories:
         if correctCount < 4: #Loops through each category until a match is found or there are no more categories
 
-            correctCount = 0
-
-            for word in categories[category]:
+            for word in categories[category]: #Counts the number of correct guesses
                 if (word.lower() in guesses):
                     correctCount += 1
             
             if correctCount == 4:
                 foundCategories[category] = categories[category]
                 print(f"Correct! Found Category: {category}")
-            elif correctCount == 3:
+            elif correctCount == 3: #Recognises when the guess is one away from correct
                 print(f"One away...")
+            
+            if correctCount <= 3:
+                correctCount = 0
+
     
     if correctCount < 4: #If no category matches, lose a life
         lives -= 1
@@ -240,6 +272,7 @@ if __name__ == "__main__":
         sleep(1)
         print("To")
         sleep(1)
+        #Big Logo
         print("""
 \u001b[36m
 ██████╗ ██╗   ██╗ ██████╗ ██████╗ ███╗   ██╗███╗   ██╗███████╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
