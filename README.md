@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/healey-o/11-SE-connections-assessment/blob/main/logo.png" alt="PyConnections Logo"/>
+</p>
+
 # PyConnections
 
 Welcome to PyConnections! This terminal-based python game is based of the brain-twisting NY Times game Connections. Created by Oliver Healey on 20/2/2024 for a Year 11 Software Engineering Assessment Task.
