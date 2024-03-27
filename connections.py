@@ -158,7 +158,7 @@ def GetGuesses(foundCategories):
 
             if not valid:
                 print("Sorry, that response is not valid. Please try again.")
-                return GetGuesses(foundCategories)
+                return GetGuesses(foundCategories) #RECURSION WOOO
         
     else:
         i = 0
@@ -185,7 +185,8 @@ def GetGuesses(foundCategories):
 
             if not valid:
                 print("Sorry, that response is not valid. Please try again.")
-                return GetGuesses(foundCategories)
+                if len(validGuesses) == 0:#Only full restarts the guesses if it is the first guess
+                    return GetGuesses(foundCategories)
             
             i+=1
 
