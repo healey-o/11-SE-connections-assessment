@@ -168,7 +168,7 @@ def GetGuesses(foundCategories):
         while len(validGuesses) < 4:
             #All guesses are be made lowercase for easier matching
             if i > 0: #only runs after the first guess
-                guess = input("\u001b[33mEnter a word from the grid:").lower()
+                guess = input("\u001b[33mEnter a word from the grid:\u001b[37m").lower()
             
             valid = False
 
