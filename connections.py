@@ -277,9 +277,9 @@ if __name__ == "__main__":
         gameWon = False
 
         #Intro
-        print("Welcome")
+        print("\u001b[01mWelcome")
         sleep(1)
-        print("To")
+        print("To\u001b[00m")
         sleep(1)
 
         #Big Logo
