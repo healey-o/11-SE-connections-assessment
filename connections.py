@@ -165,7 +165,7 @@ def GetGuesses(foundCategories):
         while len(validGuesses) < 4:
             #All guesses are be made lowercase for easier matching
             if i > 0: #only runs after the first guess
-                guess = input("Enter a word from the grid, or enter 4 words:").lower()
+                guess = input("Enter a word from the grid:").lower()
             
             valid = False
 
@@ -187,6 +187,8 @@ def GetGuesses(foundCategories):
                 print("Sorry, that response is not valid. Please try again.")
                 if len(validGuesses) == 0:#Only full restarts the guesses if it is the first guess
                     return GetGuesses(foundCategories)
+            
+            print(f"Words guessed: {", ".join(validGuesses)}")
             
             i+=1
 
