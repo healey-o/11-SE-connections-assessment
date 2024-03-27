@@ -13,8 +13,7 @@ def GetRandomCategories():
     cursor = categoriesConnection.cursor()
 
     cursor.execute("SELECT * FROM categories ORDER BY RANDOM() LIMIT 4") #Selects 4 random rows of the database
-
-    #The first option in each row is the category name, and the remaining 4 are the words in said category
+    #The first option in each row of the database is the category name, and the remaining 4 are the words in said category
 
     categories = {}
 
@@ -32,12 +31,10 @@ def WordListFromGrid(grid:list):
     for row in grid:
         for word in row:
             words.append(word)
-    
     return words
 
 #Takes the four categories and randomly places their words in a 4x4 grid
 def RandomizeGrid(categories:dict):
-    
     randomGrid = []
 
     gridWords = []
@@ -45,7 +42,6 @@ def RandomizeGrid(categories:dict):
     for category in categories:
         for word in categories[category]:
             gridWords.append(word)
-    
     
     #Places these words in random positions in the list
     for y in range(4):
@@ -56,7 +52,6 @@ def RandomizeGrid(categories:dict):
             row.append(selectedWord)
         
         randomGrid.append(row)
-    
     return randomGrid
 
 #Displays the grid and associated info to the player
@@ -77,7 +72,6 @@ def DisplayGrid(grid, foundCategories, gameWon):
             print("-",end="")
 
     for row in grid:
-        
         if grid.index(row) <= (len(foundCategories) - 1): #When the line is displaying guessed categories, change text colour and print the category name
             print("\u001b[32m")
             print(f"Category: {list(foundCategories.keys())[grid.index(row)]}")
@@ -95,10 +89,7 @@ def DisplayGrid(grid, foundCategories, gameWon):
             print("|",end="")
         
         print("\n")
-
         draw_line()
-
-        
 
     print("\n\u001b[31mMistakes remaining:", end="")#Lives counter
     for i in range(lives):
@@ -143,7 +134,6 @@ def GetGuesses(foundCategories):
     if " " in guess and len(guess.split()) == 4: #Allows all 4 guesses at once
         guesses = guess.split()
 
-        
         for guessSplit in guesses:#Check if each word is valid
             valid = False
 
@@ -162,8 +152,7 @@ def GetGuesses(foundCategories):
             if not valid:
                 print("\u001b[31mSorry, that response is not valid. Please try again.")
                 return GetGuesses(foundCategories) #RECURSION WOOO
-            
-        
+              
     else:
         i = 0
         while len(validGuesses) < 4:
@@ -185,7 +174,6 @@ def GetGuesses(foundCategories):
                     if guess == word.lower() and guess not in validGuesses:
                         validGuesses.append(guess)
                         valid = True
-
 
             if not valid:
                 print("\u001b[31mSorry, that response is not valid. Please try again.")
@@ -220,17 +208,14 @@ def CheckGuesses(guesses, categories, foundCategories):
             if correctCount <= 3:
                 correctCount = 0
 
-    
     if correctCount < 4: #If no category matches, lose a life
         lives -= 1
         print(f"\u001b[31mThat is not correct.") 
-
 
     return foundCategories
 
 #Checks if all categories have been found
 def CheckWin(foundCategories):
-
     if len(foundCategories) == 4:
         return True
     else:
@@ -238,7 +223,6 @@ def CheckWin(foundCategories):
 
 #Asks the player if they wish to play again or exit
 def PromptPlayAgain():
-    
     playAgain = input("\u001b[37mDo you want to play again? (Y/N)")
 
     if playAgain.lower() in ["y","yes"]:
@@ -247,12 +231,11 @@ def PromptPlayAgain():
         return False
     else:
         print("\u001b[31mPlease enter Y or N.")
-        return PromptPlayAgain()
+        return PromptPlayAgain() #MORE RECURSION
 
 
 #Main game loop - Displays the grid then prompts for and checks guesses
 def GameLoop(categories, grid, foundCategories):
-
     DisplayGrid(grid, foundCategories, False)
 
     guesses = GetGuesses(foundCategories)
@@ -260,11 +243,10 @@ def GameLoop(categories, grid, foundCategories):
 
 
 #Main script - initializes the variables, then runs the main game loop until the game ends.
-
 if __name__ == "__main__":
     playing = True
 
-    firstGame = True #Checks if this is the first game, and the player has not chosen to play again.
+    firstGame = True #Used to determine if a tutorial should be displayed - only true during frist play, not repeats
 
     while playing:
         categories = GetRandomCategories()
@@ -293,7 +275,6 @@ if __name__ == "__main__":
 ╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 \u001b[37m
 """)
-
         sleep(2)
 
         if firstGame:
@@ -319,5 +300,6 @@ if __name__ == "__main__":
             print("\u001b[31mSorry, you have run out of lives.")
         
         playing = PromptPlayAgain()
-
-        firstGame = False
+        
+        if firstGame:#Prevents the tutorial from playing every time
+            firstGame = False
