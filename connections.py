@@ -1,7 +1,7 @@
 from random import randint
 import sqlite3
-from contextlib import closing
 from time import sleep
+import string
 
 #connections.py is a simple terminal-based version of NY Times game Connections
 #Created by Oliver Healey
@@ -142,23 +142,26 @@ def GetGuesses(foundCategories):
     if " " in guess and len(guess.split()) == 4: #Allows all 4 guesses at once
         guesses = guess.split()
 
-        valid = False
+        
         for guessSplit in guesses:#Check if each word is valid
+            valid = False
+
+            guessSplit = guessSplit.translate(str.maketrans('', '', string.whitespace)) #Removes spaces
+
             alreadyFound = False
 
             for category in foundCategories: #Check that the word is not a part of a category that has already been found.
-                    if guessSplit in [x.lower() for x in foundCategories[category]]:
-                        alreadyFound = True
+                if guessSplit in [x.lower() for x in foundCategories[category]]:
+                    alreadyFound = True
 
             if guessSplit in [x.lower() for x in gridWords] and guessSplit not in validGuesses and not alreadyFound:
                 validGuesses.append(guessSplit)
                 valid = True
-            
-            
 
             if not valid:
                 print("\u001b[31mSorry, that response is not valid. Please try again.")
                 return GetGuesses(foundCategories) #RECURSION WOOO
+            
         
     else:
         i = 0
