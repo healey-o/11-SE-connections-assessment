@@ -60,10 +60,11 @@ def RandomizeGrid(categories:dict):
     return randomGrid
 
 #Displays the grid and associated info to the player
-def DisplayGrid(grid, foundCategories):
+def DisplayGrid(grid, foundCategories, gameWon):
     global lives
 
-    print("\n\u001b[33mCreate four groups of four!")
+    if not gameWon:
+        print("\n\u001b[33mCreate four groups of four!")
 
     gridWords = WordListFromGrid(grid)
 
@@ -300,6 +301,8 @@ if __name__ == "__main__":
             gameWon = CheckWin(foundCategories) #Checks if the game is completed
         
         if gameWon:
+            DisplayGrid(grid, foundCategories, gameWon)
+
             if lives == 1:
                 print("Phew!")
             print("\u001b[32mCongratulations! You win!")
