@@ -138,7 +138,7 @@ def GetGuesses(foundCategories):
     validGuesses = []
     gridWords = WordListFromGrid(grid)
 
-    guess = input("\u001b[33mEnter a word from the grid, or enter 4 words:\u001b[37m").lower() #This input runs before the others to check if the player is entering several words
+    guess = input("\u001b[33mEnter a word from the grid, or enter 4 words:\u001b[37m ").lower() #This input runs before the others to check if the player is entering several words
 
     if " " in guess and len(guess.split()) == 4: #Allows all 4 guesses at once
         guesses = guess.split()
@@ -169,7 +169,7 @@ def GetGuesses(foundCategories):
         while len(validGuesses) < 4:
             #All guesses are be made lowercase for easier matching
             if i > 0: #only runs after the first guess
-                guess = input("\u001b[33mEnter a word from the grid:\u001b[37m").lower()
+                guess = input("\u001b[33mEnter a word from the grid:\u001b[37m ").lower()
             
             valid = False
 
@@ -264,6 +264,8 @@ def GameLoop(categories, grid, foundCategories):
 if __name__ == "__main__":
     playing = True
 
+    firstGame = True #Checks if this is the first game, and the player has not chosen to play again.
+
     while playing:
         categories = GetRandomCategories()
         foundCategories = {}
@@ -279,6 +281,7 @@ if __name__ == "__main__":
         sleep(1)
         print("To")
         sleep(1)
+
         #Big Logo
         print("""
 \u001b[36m
@@ -290,7 +293,13 @@ if __name__ == "__main__":
 ╚═╝        ╚═╝    ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 \u001b[37m
 """)
+
         sleep(2)
+
+        if firstGame:
+            print("\u001b[31mHow to Play: \u001b[32mIdentify categories in the grid, then type your guess. You can either enter words one at a time, or all together and separated by spaces.")
+
+            input("Press \u001b[34m[Enter]\u001b[32m to begin.\u001b[37m")
 
         #Runs the game loop for the duration of the game
         while lives > 0 and not gameWon:
@@ -310,3 +319,5 @@ if __name__ == "__main__":
             print("\u001b[31mSorry, you have run out of lives.")
         
         playing = PromptPlayAgain()
+
+        firstGame = False
