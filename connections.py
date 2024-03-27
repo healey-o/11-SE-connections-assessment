@@ -253,7 +253,7 @@ def PromptPlayAgain():
 #Main game loop - Displays the grid then prompts for and checks guesses
 def GameLoop(categories, grid, foundCategories):
 
-    DisplayGrid(grid, foundCategories)
+    DisplayGrid(grid, foundCategories, False)
 
     guesses = GetGuesses(foundCategories)
     foundCategories = CheckGuesses(guesses, categories, foundCategories)
