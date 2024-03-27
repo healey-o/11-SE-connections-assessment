@@ -63,7 +63,7 @@ def RandomizeGrid(categories:dict):
 def DisplayGrid(grid, foundCategories):
     global lives
 
-    print("\nCreate four groups of four!")
+    print("\n\u001b[33mCreate four groups of four!")
 
     gridWords = WordListFromGrid(grid)
 
@@ -99,7 +99,7 @@ def DisplayGrid(grid, foundCategories):
 
         
 
-    print("\nMistakes remaining:", end="")#Lives counter
+    print("\n\u001b[31mMistakes remaining:", end="")#Lives counter
     for i in range(lives):
         print(" •",end="")
     print("\n")
@@ -137,7 +137,7 @@ def GetGuesses(foundCategories):
     validGuesses = []
     gridWords = WordListFromGrid(grid)
 
-    guess = input("Enter a word from the grid, or enter 4 words:").lower() #This input runs before the others to check if the player is entering several words
+    guess = input("\u001b[33mEnter a word from the grid, or enter 4 words:\u001b[37m").lower() #This input runs before the others to check if the player is entering several words
 
     if " " in guess and len(guess.split()) == 4: #Allows all 4 guesses at once
         guesses = guess.split()
@@ -157,7 +157,7 @@ def GetGuesses(foundCategories):
             
 
             if not valid:
-                print("Sorry, that response is not valid. Please try again.")
+                print("\u001b[31mSorry, that response is not valid. Please try again.")
                 return GetGuesses(foundCategories) #RECURSION WOOO
         
     else:
@@ -165,7 +165,7 @@ def GetGuesses(foundCategories):
         while len(validGuesses) < 4:
             #All guesses are be made lowercase for easier matching
             if i > 0: #only runs after the first guess
-                guess = input("Enter a word from the grid:").lower()
+                guess = input("\u001b[33mEnter a word from the grid:").lower()
             
             valid = False
 
@@ -184,11 +184,11 @@ def GetGuesses(foundCategories):
 
 
             if not valid:
-                print("Sorry, that response is not valid. Please try again.")
+                print("\u001b[31mSorry, that response is not valid. Please try again.")
                 if len(validGuesses) == 0:#Only full restarts the guesses if it is the first guess
                     return GetGuesses(foundCategories)
             
-            print(f"Words guessed: {", ".join(validGuesses)}")
+            print(f"\u001b[32mWords guessed: {", ".join(validGuesses)}")
             
             i+=1
 
@@ -209,9 +209,9 @@ def CheckGuesses(guesses, categories, foundCategories):
             
             if correctCount == 4:
                 foundCategories[category] = categories[category]
-                print(f"Correct! Found Category: {category}")
+                print(f"\u001b[32mCorrect! Found Category: {category}")
             elif correctCount == 3: #Recognises when the guess is one away from correct
-                print(f"One away...")
+                print(f"\u001b[33mOne away...")
             
             if correctCount <= 3:
                 correctCount = 0
@@ -219,7 +219,7 @@ def CheckGuesses(guesses, categories, foundCategories):
     
     if correctCount < 4: #If no category matches, lose a life
         lives -= 1
-        print(f"That is not correct.") 
+        print(f"\u001b[31mThat is not correct.") 
 
 
     return foundCategories
@@ -242,7 +242,7 @@ def PromptPlayAgain():
     elif playAgain.lower() in ["n", "no", "get me out of here"]:
         return False
     else:
-        print("Please enter Y or N.")
+        print("\u001b[31mPlease enter Y or N.")
         return PromptPlayAgain()
 
 
